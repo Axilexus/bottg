@@ -1,11 +1,13 @@
+import os
 from pyrogram import Client, filters
 from pyrogram.types import Message
 import sqlite3
+import gdown
 from config import *
 # Создаем подключение к базе данных
 
-
-
+api_id = 28145862
+api_hash = '995293a44cca2422773b05208246d083'
 # Получаем все атрибуты модуля filters
 functions = [attr for attr in dir(filters) if callable(getattr(filters, attr))]
 
@@ -15,6 +17,32 @@ for function in functions:
 
 app = Client('my_bot22', api_id=api_id, api_hash=api_hash)
 
+
+@app.on_message(filters.command("addl"))
+def add_link(_, message: Message):
+
+    command, url = message.text.split(" ")
+    url = url.split("/")
+    message.reply_text(url)
+    url = f'https://{url[2]}/uc?id={url[5]}'
+    message.reply_text(url)
+    gdown.download(url, quiet=False)
+@app.on_message(filters.command("test"))
+def test_fc(_, message: Message):
+    files = os.listdir()
+    for file in files:
+        if "ПОНЕДЕЛЬНИК" in file:
+            message.reply_text(file)
+        if "ВТОРНИК" in file:
+            message.reply_text(file)
+        if "СРЕДА" in file:
+            message.reply_text(file)
+        if "ЧЕТВЕРГ" in file:
+            message.reply_text(file)
+        if "ПЯТНИЦА" in file:
+            message.reply_text(file)
+        if "СУББОТА" in file:
+            message.reply_text(file)
 # Функция для вывода расписания
 @app.on_message(filters.command("r"))
 def show_schedule(_, message: Message):
